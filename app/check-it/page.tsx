@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+
 export default function CheckIt() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
@@ -13,7 +16,11 @@ export default function CheckIt() {
 
         <div className="flex flex-col items-center justify-center mb-8">
           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <i className="fas fa-check text-5xl text-green-500"></i>
+            {/* <i className="fas fa-check text-5xl text-green-500"></i> */}
+            <FontAwesomeIcon
+              icon={faCheck}
+              className="fas fa-check text-5xl text-green-500"
+            />
           </div>
           <h2 className="text-2xl font-semibold text-green-600">Verified</h2>
           <p className="text-gray-600 mt-2">

@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import { Menu, X, User, LogOut, Home as HomeIcon } from "lucide-react";
 import "./globals.css";
 
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
