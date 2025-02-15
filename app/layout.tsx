@@ -45,16 +45,16 @@ const NavBar = () => {
             </Link>
 
             <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+              <a className="text-gray-600 hover:text-gray-900">Presentation</a>
             </Link>
             <Link href="/favorites" passHref legacyBehavior>
               <a className="text-gray-600 hover:text-gray-900">Favorites</a>
             </Link>
             <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+              <a className="text-gray-600 hover:text-gray-900">blog</a>
             </Link>
             <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+              <a className="text-gray-600 hover:text-gray-900">Partners</a>
             </Link>
 
             <Link href="/about" passHref legacyBehavior>

@@ -82,7 +82,7 @@ const Home = () => {
         item.zone.toLowerCase().includes(filters.zone.toLowerCase()))
   );
 
-  const handleFavorite = (itemId: any) => {
+  const handleFavorite = (itemId: number) => {
     console.log("Favorited item:", itemId);
   };
 
@@ -249,7 +249,8 @@ const Home = () => {
           <Card
             key={item.id}
             className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-            onClick={() => router.push(`/products/${item.id}`)}
+            // onClick={() => router.push(`/products/${item.id}`)}
+            onClick={() => router.push(`/products`)}
           >
             <div className="relative">
               <img

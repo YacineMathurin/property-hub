@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Heart,
   Share2,
