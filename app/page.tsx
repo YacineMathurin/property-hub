@@ -182,66 +182,62 @@ const Home = () => {
             {showMoreFilters ? "Show Less Filters" : "Show More Filters"}
           </button>
 
-          {/* Additional Filters */}
-          <AnimatePresence>
-            {showMoreFilters && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl shadow-sm"
-              >
-                {/* Price Range */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">
-                    Price Range
-                  </label>
-                  <Slider
-                    defaultValue={[filters.minPrice, filters.maxPrice]}
-                    max={2000}
-                    step={50}
-                    onValueChange={(value) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        minPrice: value[0],
-                        maxPrice: value[1],
-                      }))
-                    }
-                    className="py-4"
-                  />
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>${filters.minPrice}</span>
-                    <span>${filters.maxPrice}</span>
-                  </div>
-                </div>
+          {/* Show More Filters */}
+          <div
+            style={{
+              height: showMoreFilters ? "100px" : 0,
+              overflow: "hidden",
+            }}
+            className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 bg-white rounded-xl shadow-sm transition-all duration-500 ease-in-out"
+          >
+            {/* Price Range */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Price Range
+              </label>
+              <Slider
+                defaultValue={[filters.minPrice, filters.maxPrice]}
+                max={2000}
+                step={50}
+                onValueChange={(value) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    minPrice: value[0],
+                    maxPrice: value[1],
+                  }))
+                }
+                className="py-4"
+              />
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>${filters.minPrice}</span>
+                <span>${filters.maxPrice}</span>
+              </div>
+            </div>
 
-                {/* Dimension Range */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">
-                    Dimension Range
-                  </label>
-                  <Slider
-                    defaultValue={[filters.minDimension, filters.maxDimension]}
-                    max={200}
-                    step={5}
-                    onValueChange={(value) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        minDimension: value[0],
-                        maxDimension: value[1],
-                      }))
-                    }
-                    className="py-4"
-                  />
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>{filters.minDimension}m²</span>
-                    <span>{filters.maxDimension}m²</span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            {/* Dimension Range */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Dimension Range
+              </label>
+              <Slider
+                defaultValue={[filters.minDimension, filters.maxDimension]}
+                max={200}
+                step={5}
+                onValueChange={(value) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    minDimension: value[0],
+                    maxDimension: value[1],
+                  }))
+                }
+                className="py-4"
+              />
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>{filters.minDimension}m²</span>
+                <span>{filters.maxDimension}m²</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <p className="text-gray-600 text-lg mb-4">
