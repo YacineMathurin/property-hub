@@ -89,21 +89,35 @@ const NavBar = () => {
         {isMenuOpen && (
           <div className="lg:hidden pb-4">
             <div className="flex flex-col space-y-3">
-              <a href="#" className="text-gray-600 hover:text-gray-900 py-2">
-                Home
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 py-2">
-                Properties
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 py-2">
-                Favorites
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 py-2">
-                About
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 py-2">
-                Contact
-              </a>
+              <Link href="/" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">Home</a>
+              </Link>
+              <Link href="/check-it" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">Check it</a>
+              </Link>
+
+              <Link href="/favorites" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">
+                  Presentation
+                </a>
+              </Link>
+              <Link href="/favorites" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+              </Link>
+              <Link href="/favorites" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">blog</a>
+              </Link>
+              <Link href="/favorites" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">Partners</a>
+              </Link>
+
+              <Link href="/about" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">About</a>
+              </Link>
+
+              <Link href="/contact" passHref legacyBehavior>
+                <a className="text-gray-600 hover:text-gray-900">Contact</a>
+              </Link>
             </div>
           </div>
         )}

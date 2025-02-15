@@ -112,7 +112,7 @@ const Home = () => {
     }, [isMobile]);
 
     if (isMobile) {
-      return <span className="text-violet-600 font-bold">perfect</span>;
+      return <span className="text-cyan-600 font-bold">perfect</span>;
     }
 
     return (
@@ -127,7 +127,7 @@ const Home = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 text-violet-600 font-bold whitespace-nowrap"
+            className="absolute inset-0 text-cyan-600 font-bold whitespace-nowrap"
           >
             {words[currentIndex]}
           </motion.span>
@@ -177,7 +177,7 @@ const Home = () => {
           {/* Show More Filters Button */}
           <button
             onClick={() => setShowMoreFilters(!showMoreFilters)}
-            className="text-violet-600 hover:text-violet-700 font-medium transition-colors"
+            className="text-cyan-600 hover:text-violet-700 font-medium transition-colors"
           >
             {showMoreFilters ? "Show Less Filters" : "Show More Filters"}
           </button>
@@ -270,11 +270,9 @@ const Home = () => {
             </CardHeader>
             <CardContent className="p-4 pt-0">
               <div className="flex justify-between text-sm">
-                <span className="font-medium text-violet-600">
-                  ${item.price}
-                </span>
+                <span className="font-medium text-cyan-600">${item.price}</span>
                 <span className="text-gray-600">{item.dimension}m²</span>
-                <span className="text-violet-600">{item.zone}</span>
+                <span className="text-cyan-600">{item.zone}</span>
               </div>
             </CardContent>
           </Card>
