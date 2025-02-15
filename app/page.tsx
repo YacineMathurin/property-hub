@@ -6,85 +6,213 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+// Sample location data
+const cityData = {
+  Paris: {
+    zones: ["Le Marais", "Montmartre", "Champs-Élysées", "Latin Quarter"],
+    referencePoints: {
+      "Le Marais": { lat: 48.8566, lng: 2.3522 },
+      Montmartre: { lat: 48.8867, lng: 2.3431 },
+      "Champs-Élysées": { lat: 48.8738, lng: 2.295 },
+      "Latin Quarter": { lat: 48.8489, lng: 2.3469 },
+    },
+  },
+  Lyon: {
+    zones: ["Presqu'île", "Vieux Lyon", "Croix-Rousse", "Confluence"],
+    referencePoints: {
+      "Presqu'île": { lat: 45.7579, lng: 4.832 },
+      "Vieux Lyon": { lat: 45.762, lng: 4.827 },
+      "Croix-Rousse": { lat: 45.7746, lng: 4.8316 },
+      Confluence: { lat: 45.7435, lng: 4.8157 },
+    },
+  },
+  Marseille: {
+    zones: ["Vieux-Port", "Le Panier", "Notre-Dame", "Prado"],
+    referencePoints: {
+      "Vieux-Port": { lat: 43.2965, lng: 5.3698 },
+      "Le Panier": { lat: 43.2988, lng: 5.3688 },
+      "Notre-Dame": { lat: 43.2843, lng: 5.3715 },
+      Prado: { lat: 43.2715, lng: 5.3781 },
+    },
+  },
+};
+
+const items = [
+  {
+    id: 1,
+    title: "Modern Studio Apartment",
+    price: 500,
+    city: "Paris",
+    zone: "Le Marais",
+    dimension: 45,
+    location: { lat: 49.8566, lng: 2.3522 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 2,
+    title: "Luxury 2-Bedroom Apartment",
+    price: 1200,
+    city: "Paris",
+    zone: "Saint-Germain-des-Prés",
+    dimension: 75,
+    location: { lat: 48.8566, lng: 2.3333 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 3,
+    title: "Cozy Loft in Central Paris",
+    price: 850,
+    city: "Paris",
+    zone: "Le Quartier Latin",
+    dimension: 60,
+    location: { lat: 48.8527, lng: 2.3444 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 4,
+    title: "Charming 1-Bedroom Apartment",
+    price: 700,
+    city: "Lyon",
+    zone: "Vieux Lyon",
+    dimension: 50,
+    location: { lat: 45.7597, lng: 4.8422 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 5,
+    title: "Spacious 3-Bedroom House",
+    price: 1500,
+    city: "Lyon",
+    zone: "Part-Dieu",
+    dimension: 95,
+    location: { lat: 45.7469, lng: 4.852 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 6,
+    title: "Modern 2-Bedroom Flat",
+    price: 950,
+    city: "Lyon",
+    zone: "La Croix-Rousse",
+    dimension: 70,
+    location: { lat: 45.764, lng: 4.8298 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 7,
+    title: "Beachside Studio Apartment",
+    price: 600,
+    city: "Marseille",
+    zone: "Vieux-Port",
+    dimension: 40,
+    location: { lat: 43.2965, lng: 5.3698 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 8,
+    title: "Seafront 2-Bedroom Apartment",
+    price: 1200,
+    city: "Marseille",
+    zone: "Bonneveine",
+    dimension: 85,
+    location: { lat: 43.2381, lng: 5.4308 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 9,
+    title: "Modern Apartment with Sea View",
+    price: 950,
+    city: "Marseille",
+    zone: "Plage du Prado",
+    dimension: 75,
+    location: { lat: 43.2682, lng: 5.394 },
+    image: "https://placehold.co/300x200",
+  },
+  {
+    id: 10,
+    title: "Renovated Loft in Old Marseille",
+    price: 800,
+    city: "Marseille",
+    zone: "Le Panier",
+    dimension: 55,
+    location: { lat: 43.298, lng: 5.3677 },
+    image: "https://placehold.co/300x200",
+  },
+];
 
 const Home = () => {
   const router = useRouter();
   const [showMoreFilters, setShowMoreFilters] = useState(false);
 
   const [filters, setFilters] = useState({
+    city: "",
+    zone: "",
+    distance: 5, // Default 5km radius
     minPrice: 0,
     maxPrice: 2000,
-    zone: "",
     minDimension: 0,
     maxDimension: 200,
   });
 
-  // Extended sample data with more variety
-  const items = [
-    {
-      id: 1,
-      title: "Modern Studio Apartment",
-      price: 500,
-      zone: "North",
-      dimension: 45,
-      image: "https://placehold.co/300x200",
-    },
-    // ... (previous items 2-11 remain the same)
-    {
-      id: 12,
-      title: "Park View Apartment",
-      price: 1100,
-      zone: "North",
-      dimension: 95,
-      image: "https://placehold.co/300x200",
-    },
-    {
-      id: 13,
-      title: "Riverside Condo",
-      price: 1300,
-      zone: "East",
-      dimension: 110,
-      image: "https://placehold.co/300x200",
-    },
-    {
-      id: 14,
-      title: "Garden House",
-      price: 1700,
-      zone: "South",
-      dimension: 140,
-      image: "https://placehold.co/300x200",
-    },
-    {
-      id: 15,
-      title: "City View Loft",
-      price: 900,
-      zone: "Downtown",
-      dimension: 70,
-      image: "https://placehold.co/300x200",
-    },
-    {
-      id: 16,
-      title: "City View Loft",
-      price: 900,
-      zone: "Downtown",
-      dimension: 70,
-      image: "https://placehold.co/300x200",
-    },
-  ];
-
-  const filteredItems = items.filter(
-    (item) =>
-      item.price >= filters.minPrice &&
-      item.price <= filters.maxPrice &&
+  // Calculate distance between two points (using Haversine formula)
+  const calculateDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+  const filteredItems = items.filter((item) => {
+    const priceMatch =
+      item.price >= filters.minPrice && item.price <= filters.maxPrice;
+    const dimensionMatch =
       item.dimension >= filters.minDimension &&
-      item.dimension <= filters.maxDimension &&
-      (filters.zone === "" ||
-        item.zone.toLowerCase().includes(filters.zone.toLowerCase()))
-  );
+      item.dimension <= filters.maxDimension;
+    const cityMatch = !filters.city || item.city === filters.city;
+    const zoneMatch = !filters.zone || item.zone === filters.zone;
+
+    let distanceMatch = true;
+    if (filters.zone && filters.distance) {
+      const referencePoint =
+        cityData[filters.city]?.referencePoints[filters.zone];
+      const distance = calculateDistance(
+        referencePoint.lat,
+        referencePoint.lng,
+        item.location.lat,
+        item.location.lng
+      );
+      distanceMatch = distance <= filters.distance;
+    }
+
+    return (
+      priceMatch && dimensionMatch && cityMatch && zoneMatch && distanceMatch
+    );
+  });
 
   const handleFavorite = (itemId: number) => {
     console.log("Favorited item:", itemId);
   };
+
+  const [previewCount, setPreviewCount] = useState(0);
 
   const CyclingText = () => {
     const words = ["beautiful", "stunning", "peaceful"];
@@ -159,19 +287,54 @@ const Home = () => {
       {/* Filters Section */}
       <div className="mb-8">
         <div className="flex flex-col items-center space-y-6">
-          {/* Zone Filter - Always visible */}
-          <div className="w-full max-w-2xl">
-            <Input
-              type="text"
-              placeholder="Search by zone..."
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  zone: e.target.value,
-                }))
+          {/* Location Filters - Always visible */}
+          <div className="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select
+              value={filters.city}
+              onValueChange={(value) =>
+                setFilters((prev) => ({ ...prev, city: value, zone: "" }))
               }
-              className="w-full h-12 px-4 rounded-xl border-gray-200 focus:ring-violet-500 focus:border-violet-500"
-            />
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a city" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(cityData).map((city) => (
+                  <SelectItem key={city} value={city}>
+                    {city}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={filters.zone}
+              onValueChange={(value) =>
+                setFilters((prev) => ({ ...prev, zone: value }))
+              }
+              disabled={!filters.city}
+            >
+              <SelectTrigger>
+                <SelectValue
+                  placeholder={
+                    filters.city ? "Select a zone" : "Select a city first"
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {filters.city &&
+                  cityData[filters.city].zones.map((zone) => (
+                    <SelectItem key={zone} value={zone}>
+                      {zone}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Preview Counter */}
+          <div className="text-sm text-gray-600">
+            Found {previewCount} properties matching your criteria
           </div>
 
           {/* Show More Filters Button */}
@@ -182,14 +345,37 @@ const Home = () => {
             {showMoreFilters ? "Show Less Filters" : "Show More Filters"}
           </button>
 
-          {/* Show More Filters */}
+          {/* Extended Filters */}
           <div
             style={{
-              height: showMoreFilters ? "100px" : 0,
+              height: showMoreFilters ? "160px" : 0,
               overflow: "hidden",
             }}
-            className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 bg-white rounded-xl shadow-sm transition-all duration-500 ease-in-out"
+            className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 bg-white rounded-xl shadow-sm transition-all duration-500 ease-in-out"
           >
+            {/* Distance Range */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Distance from {filters.zone || "selected zone"}
+              </label>
+              <Slider
+                defaultValue={[filters.distance]}
+                max={20}
+                step={1}
+                onValueChange={(value) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    distance: value[0],
+                  }))
+                }
+                disabled={!filters.zone}
+                className="py-4"
+              />
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>0 km</span>
+                <span>{filters.distance} km</span>
+              </div>
+            </div>
             {/* Price Range */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
@@ -237,6 +423,8 @@ const Home = () => {
                 <span>{filters.maxDimension}m²</span>
               </div>
             </div>
+
+            {/* Price and Dimension filters remain the same */}
           </div>
         </div>
       </div>

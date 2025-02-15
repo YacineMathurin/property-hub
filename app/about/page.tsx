@@ -136,7 +136,7 @@ const RichAboutPreview = () => {
               We believe everyone deserves to find their perfect space. Our
               mission is to revolutionize the real estate experience through
               innovation, exceptional service, and a deep understanding of our
-              clients' needs.
+              clients needs.
             </p>
           </div>
 

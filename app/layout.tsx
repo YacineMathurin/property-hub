@@ -8,6 +8,7 @@ import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 config.autoAddCss = false;
 
 const geistSans = Geist({
@@ -23,6 +24,22 @@ const geistMono = Geist_Mono({
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/check-it", label: "Check it" },
+    { href: "/ajouter-certificat", label: "Authentifier" },
+    { href: "/favorites", label: "Favorites" },
+    { href: "/blog", label: "Blog" },
+    { href: "/partners", label: "Partners" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+  ];
+
+  const pathname = usePathname();
+  console.log({ pathname });
+
+  const isActive = (path: string) => pathname === path + "/";
+
   return (
     <nav className="bg-white shadow-md fixed w-full z-50">
       <div className="container mx-auto px-4">
@@ -37,45 +54,35 @@ const NavBar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-8">
-            <Link href="/" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Home</a>
-            </Link>
-            <Link href="/check-it" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Check it</a>
-            </Link>
-
-            <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Presentation</a>
-            </Link>
-            <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
-            </Link>
-            <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">blog</a>
-            </Link>
-            <Link href="/favorites" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Partners</a>
-            </Link>
-
-            <Link href="/about" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">About</a>
-            </Link>
-
-            <Link href="/contact" passHref legacyBehavior>
-              <a className="text-gray-600 hover:text-gray-900">Contact</a>
-            </Link>
+            {navLinks.map(({ href, label }) => (
+              <Link key={href} href={href} passHref legacyBehavior>
+                <a
+                  className={`relative py-2 ${
+                    isActive(href)
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  {label}
+                  {isActive(href) && (
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600" />
+                  )}
+                </a>
+              </Link>
+            ))}
           </div>
 
           {/* User Menu */}
           <div className="hidden lg:flex items-center space-x-4">
-            <User className="h-5 w-5 text-gray-600" />
-            <LogOut className="h-5 w-5 text-gray-600" />
+            <User className="h-5 w-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
+            <LogOut className="h-5 w-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
           </div>
 
           {/* Mobile Menu Button */}
           <button
             className="lg:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? (
               <X className="h-6 w-6" />
@@ -89,35 +96,20 @@ const NavBar = () => {
         {isMenuOpen && (
           <div className="lg:hidden pb-4">
             <div className="flex flex-col space-y-3">
-              <Link href="/" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">Home</a>
-              </Link>
-              <Link href="/check-it" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">Check it</a>
-              </Link>
-
-              <Link href="/favorites" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">
-                  Presentation
-                </a>
-              </Link>
-              <Link href="/favorites" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">Favorites</a>
-              </Link>
-              <Link href="/favorites" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">blog</a>
-              </Link>
-              <Link href="/favorites" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">Partners</a>
-              </Link>
-
-              <Link href="/about" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">About</a>
-              </Link>
-
-              <Link href="/contact" passHref legacyBehavior>
-                <a className="text-gray-600 hover:text-gray-900">Contact</a>
-              </Link>
+              {navLinks.map(({ href, label }) => (
+                <Link key={href} href={href} passHref legacyBehavior>
+                  <a
+                    className={`px-4 py-2 rounded-md transition-colors ${
+                      isActive(href)
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {label}
+                  </a>
+                </Link>
+              ))}
             </div>
           </div>
         )}

@@ -115,7 +115,7 @@ const ContactPreview = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-100"
             >
-              We're here to help you find your perfect space
+              We are here to help you find your perfect space
             </motion.p>
           </div>
         </div>
