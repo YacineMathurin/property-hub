@@ -60,6 +60,14 @@ const Home = () => {
       dimension: 70,
       image: "https://placehold.co/300x200",
     },
+    {
+      id: 16,
+      title: "City View Loft",
+      price: 900,
+      zone: "Downtown",
+      dimension: 70,
+      image: "https://placehold.co/300x200",
+    },
   ];
 
   const filteredItems = items.filter(
