@@ -47,6 +47,15 @@ const NavBar = () => {
             <Link href="/favorites" passHref legacyBehavior>
               <a className="text-gray-600 hover:text-gray-900">Favorites</a>
             </Link>
+            <Link href="/favorites" passHref legacyBehavior>
+              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+            </Link>
+            <Link href="/favorites" passHref legacyBehavior>
+              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+            </Link>
+            <Link href="/favorites" passHref legacyBehavior>
+              <a className="text-gray-600 hover:text-gray-900">Favorites</a>
+            </Link>
 
             <Link href="/about" passHref legacyBehavior>
               <a className="text-gray-600 hover:text-gray-900">About</a>
