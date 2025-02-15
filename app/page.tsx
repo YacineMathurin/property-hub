@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Add this import at the top
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -86,24 +86,76 @@ const Home = () => {
     console.log("Favorited item:", itemId);
   };
 
+  const CyclingText = () => {
+    const words = ["beautiful", "stunning", "peaceful"];
+    const widths = [200, 200, 200];
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isMobile, setIsMobile] = useState(true);
+
+    useEffect(() => {
+      const checkIfMobile = () => {
+        setIsMobile(window.innerWidth < 1024);
+      };
+
+      checkIfMobile();
+      window.addEventListener("resize", checkIfMobile);
+
+      return () => window.removeEventListener("resize", checkIfMobile);
+    }, []);
+
+    useEffect(() => {
+      if (isMobile) return;
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % words.length);
+      }, 2000);
+      return () => clearInterval(interval);
+    }, [isMobile]);
+
+    if (isMobile) {
+      return <span className="text-violet-600 font-bold">perfect</span>;
+    }
+
+    return (
+      <span
+        className={`inline-block  h-[50px] relative top-2 overflow-hidden `}
+        style={{ width: widths[currentIndex] }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={words[currentIndex]}
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 text-violet-600 font-bold whitespace-nowrap"
+          >
+            {words[currentIndex]}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+    );
+  };
+
   return (
     <div className="max-w-[1440px] mx-auto px-4">
       {/* Animated Hero Section */}
-      <div className="my-12 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-4"
-        >
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text">
-            Find Your Perfect Space
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="my-16 text-center"
+      >
+        <div className="space-y-6 ">
+          <h1 className="inline-flex flex-wrap items-baseline gap-x-3 text-4xl lg:text-5xl font-bold transition-all duration-500 ease-in-out max-w-max">
+            <span>Find your</span>
+            <CyclingText />
+            <span>space</span>
           </h1>
           <p className="text-gray-600 text-lg">
             Thousands of curated properties waiting for you
           </p>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
       {/* Filters Section */}
       <div className="mb-8">
         <div className="flex flex-col items-center space-y-6">
