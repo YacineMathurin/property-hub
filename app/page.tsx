@@ -90,6 +90,20 @@ const Home = () => {
         {/* Filters Section */}
         <div className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-white p-6 rounded-lg shadow-sm">
           <div className="space-y-2">
+            <label className="text-sm font-medium">Zone</label>
+            <Input
+              type="text"
+              placeholder="Search by zone..."
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  zone: e.target.value,
+                }))
+              }
+              className="bg-gray-50"
+            />
+          </div>
+          <div className="space-y-2">
             <label className="text-sm font-medium">Price Range</label>
             <Slider
               defaultValue={[filters.minPrice, filters.maxPrice]}
@@ -109,22 +123,6 @@ const Home = () => {
               <span>${filters.maxPrice}</span>
             </div>
           </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Zone</label>
-            <Input
-              type="text"
-              placeholder="Search by zone..."
-              onChange={(e) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  zone: e.target.value,
-                }))
-              }
-              className="bg-gray-50"
-            />
-          </div>
-
           <div className="space-y-2">
             <label className="text-sm font-medium">Dimension Range</label>
             <Slider
@@ -145,10 +143,8 @@ const Home = () => {
               <span>{filters.maxDimension}m²</span>
             </div>
           </div>
-
-          <div className="text-sm text-gray-600 flex items-end pb-4">
-            {filteredItems.length} properties found
-          </div>
+          <div className="text-sm text-gray-600 flex items-end pb-4"></div>
+          {filteredItems.length} properties found
         </div>
 
         {/* Grid Section */}
