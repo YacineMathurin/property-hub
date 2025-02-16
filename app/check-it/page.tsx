@@ -1,48 +1,51 @@
 "use client";
-import React, { useState } from "react";
-import { Check, X, Search } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Search } from "lucide-react";
 
-interface CertificateData {
-  ownerName: string;
-  authId: string;
-  address: string;
-  verificationDate: string;
-  validUntil: string;
-}
+const VerificationPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResult, setSearchResult] = useState(null);
+  const searchParams = useSearchParams();
 
-type VerificationStatus = "verified" | "failed" | null;
+  // Function to perform the search
+  const performSearch = async (id: string) => {
+    if (!id) return;
 
-const CertificateVerification: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [verificationStatus, setVerificationStatus] =
-    useState<VerificationStatus>(null);
-  const [certificateData, setCertificateData] =
-    useState<CertificateData | null>(null);
-
-  const handleSearch = (): void => {
-    if (searchQuery.trim() === "AUTH-2025-0213") {
-      setCertificateData({
-        ownerName: "John Smith",
-        authId: "AUTH-2025-0213",
-        address: "123 Example Street, City, State 12345",
-        verificationDate: "February 14, 2025",
-        validUntil: "February 14, 2026",
-      });
-      setVerificationStatus("verified");
-    } else if (searchQuery.trim()) {
-      setVerificationStatus("failed");
-      setCertificateData(null);
+    try {
+      // Replace this with your actual API call
+      const response = await fetch(`/api/certificates/${id}`);
+      const data = await response.json();
+      setSearchResult(data);
+    } catch (error) {
+      console.error("Search failed:", error);
+      setSearchResult({ error: "Certificate not found" });
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  // Handle manual search button click
+  const handleSearch = () => {
+    performSearch(searchQuery);
+  };
+
+  // Handle enter key press
+  const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
+  // Effect to handle URL parameter search
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      setSearchQuery(id);
+      performSearch(id);
+    }
+  }, [searchParams]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header with Search */}
       <div className="bg-white shadow-lg border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,121 +73,28 @@ const CertificateVerification: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center py-8 px-4">
-        <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-8 transition-all duration-300">
-          <div className="text-center mb-8">
-            <p className="text-gray-600">
-              Department of Property Authentication
-            </p>
-          </div>
-
-          {verificationStatus && (
-            <>
-              <div className="flex flex-col items-center justify-center mb-8">
-                <div
-                  className={`w-24 h-24 ${
-                    verificationStatus === "verified"
-                      ? "bg-green-100"
-                      : "bg-red-100"
-                  } rounded-full flex items-center justify-center mb-4 transition-all duration-300`}
-                >
-                  {verificationStatus === "verified" ? (
-                    <Check className="w-12 h-12 text-green-500" />
-                  ) : (
-                    <X className="w-12 h-12 text-red-500" />
-                  )}
-                </div>
-                <h2
-                  className={`text-2xl font-semibold ${
-                    verificationStatus === "verified"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {verificationStatus === "verified"
-                    ? "Verified"
-                    : "Verification Failed"}
-                </h2>
-                <p className="text-gray-600 mt-2">
-                  {verificationStatus === "verified"
-                    ? "Certificate Authenticated Successfully"
-                    : "No matching certificate found"}
-                </p>
+      {/* Results Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {searchResult && (
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            {searchResult.error ? (
+              <div className="text-red-600 text-center">
+                {searchResult.error}
               </div>
-
-              {certificateData && (
-                <>
-                  <div className="bg-gray-50 rounded-xl p-6 mb-8">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      Property Details
-                    </h3>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <p className="text-gray-600 text-sm">Owner Name</p>
-                        <p className="font-semibold text-gray-800">
-                          {certificateData.ownerName}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-gray-600 text-sm">
-                          Authentication ID
-                        </p>
-                        <p className="font-semibold text-gray-800">
-                          {certificateData.authId}
-                        </p>
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <p className="text-gray-600 text-sm">
-                          Property Address
-                        </p>
-                        <p className="font-semibold text-gray-800">
-                          {certificateData.address}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-200 pt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <p className="text-gray-600 text-sm">
-                          Verification Date
-                        </p>
-                        <p className="font-semibold text-gray-800">
-                          {certificateData.verificationDate}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-gray-600 text-sm">Valid Until</p>
-                        <p className="font-semibold text-gray-800">
-                          {certificateData.validUntil}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
-          )}
-        </div>
-
-        <div className="mt-8 text-center text-gray-600 text-sm">
-          <p>
-            Official verification page of the Department of Property
-            Authentication
-          </p>
-          <p className="mt-2">
-            For any inquiries, please contact (555) 123-4567
-          </p>
-        </div>
+            ) : (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Certificate Details</h2>
+                {/* Replace with your actual certificate data display */}
+                <pre className="bg-gray-50 p-4 rounded-lg">
+                  {JSON.stringify(searchResult, null, 2)}
+                </pre>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default CertificateVerification;
+export default VerificationPage;

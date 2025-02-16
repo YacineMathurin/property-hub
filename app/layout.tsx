@@ -26,8 +26,8 @@ const NavBar = () => {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/check-it", label: "Check it" },
     { href: "/ajouter-certificat", label: "Authentifier" },
+    { href: "/check-it", label: "Verifier" },
     { href: "/favorites", label: "Favorites" },
     { href: "/blog", label: "Blog" },
     { href: "/partners", label: "Partners" },
