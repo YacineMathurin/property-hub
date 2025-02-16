@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Add this import at the top
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,102 +47,102 @@ const cityData = {
 const items = [
   {
     id: 1,
-    title: "Modern Studio Apartment",
+    title: "Charming Studio in Le Marais",
     price: 500,
     city: "Paris",
     zone: "Le Marais",
     dimension: 45,
-    location: { lat: 49.8566, lng: 2.3522 },
+    location: { lat: 48.857, lng: 2.3525 }, // ~0.1km from Le Marais center
     image: "https://placehold.co/300x200",
   },
   {
     id: 2,
-    title: "Luxury 2-Bedroom Apartment",
-    price: 1200,
+    title: "Modern Loft Near Museums",
+    price: 750,
     city: "Paris",
-    zone: "Saint-Germain-des-Prés",
-    dimension: 75,
-    location: { lat: 48.8566, lng: 2.3333 },
+    zone: "Le Marais",
+    dimension: 60,
+    location: { lat: 48.859, lng: 2.354 }, // ~0.3km from Le Marais center
     image: "https://placehold.co/300x200",
   },
   {
     id: 3,
-    title: "Cozy Loft in Central Paris",
-    price: 850,
+    title: "Cozy Apartment with Balcony",
+    price: 650,
     city: "Paris",
-    zone: "Le Quartier Latin",
-    dimension: 60,
-    location: { lat: 48.8527, lng: 2.3444 },
+    zone: "Le Marais",
+    dimension: 55,
+    location: { lat: 48.86, lng: 2.355 }, // ~0.5km from Le Marais center
     image: "https://placehold.co/300x200",
   },
   {
     id: 4,
-    title: "Charming 1-Bedroom Apartment",
-    price: 700,
-    city: "Lyon",
-    zone: "Vieux Lyon",
-    dimension: 50,
-    location: { lat: 45.7597, lng: 4.8422 },
+    title: "Historic Building Studio",
+    price: 550,
+    city: "Paris",
+    zone: "Le Marais",
+    dimension: 40,
+    location: { lat: 48.862, lng: 2.358 }, // ~0.8km from Le Marais center
     image: "https://placehold.co/300x200",
   },
   {
     id: 5,
-    title: "Spacious 3-Bedroom House",
-    price: 1500,
-    city: "Lyon",
-    zone: "Part-Dieu",
-    dimension: 95,
-    location: { lat: 45.7469, lng: 4.852 },
+    title: "Luxury Penthouse",
+    price: 1200,
+    city: "Paris",
+    zone: "Le Marais",
+    dimension: 85,
+    location: { lat: 48.865, lng: 2.36 }, // ~1.2km from Le Marais center
     image: "https://placehold.co/300x200",
   },
   {
     id: 6,
-    title: "Modern 2-Bedroom Flat",
-    price: 950,
-    city: "Lyon",
-    zone: "La Croix-Rousse",
-    dimension: 70,
-    location: { lat: 45.764, lng: 4.8298 },
+    title: "Artist Studio with Garden",
+    price: 800,
+    city: "Paris",
+    zone: "Montmartre",
+    dimension: 65,
+    location: { lat: 48.888, lng: 2.344 }, // ~0.2km from Montmartre center
     image: "https://placehold.co/300x200",
   },
   {
     id: 7,
-    title: "Beachside Studio Apartment",
-    price: 600,
-    city: "Marseille",
-    zone: "Vieux-Port",
-    dimension: 40,
-    location: { lat: 43.2965, lng: 5.3698 },
+    title: "Modern Duplex",
+    price: 900,
+    city: "Paris",
+    zone: "Champs-Élysées",
+    dimension: 75,
+    location: { lat: 48.8745, lng: 2.296 }, // ~0.1km from Champs-Élysées center
     image: "https://placehold.co/300x200",
   },
   {
     id: 8,
-    title: "Seafront 2-Bedroom Apartment",
-    price: 1200,
-    city: "Marseille",
-    zone: "Bonneveine",
-    dimension: 85,
-    location: { lat: 43.2381, lng: 5.4308 },
+    title: "Student Friendly Apartment",
+    price: 600,
+    city: "Paris",
+    zone: "Latin Quarter",
+    dimension: 50,
+    location: { lat: 48.8495, lng: 2.3475 }, // ~0.1km from Latin Quarter center
     image: "https://placehold.co/300x200",
   },
   {
     id: 9,
-    title: "Modern Apartment with Sea View",
-    price: 950,
-    city: "Marseille",
-    zone: "Plage du Prado",
-    dimension: 75,
-    location: { lat: 43.2682, lng: 5.394 },
+    title: "Renovated Classic Apartment",
+    price: 850,
+    city: "Paris",
+    zone: "Le Marais",
+    dimension: 70,
+    location: { lat: 48.87, lng: 2.365 }, // ~2km from Le Marais center
     image: "https://placehold.co/300x200",
   },
   {
     id: 10,
-    title: "Renovated Loft in Old Marseille",
-    price: 800,
-    city: "Marseille",
-    zone: "Le Panier",
-    dimension: 55,
-    location: { lat: 43.298, lng: 5.3677 },
+    title: "Boutique Living Space",
+    price: 950,
+    city: "Paris",
+    zone: "Le Marais",
+    dimension: 80,
+    location: { lat: 48.875, lng: 2.37 }, // ~3km from Le Marais center
     image: "https://placehold.co/300x200",
   },
 ];
@@ -162,25 +161,36 @@ const Home = () => {
     maxDimension: 200,
   });
 
-  // Calculate distance between two points (using Haversine formula)
+  useEffect(() => {
+    setPreviewCount(filteredItems.length);
+  }, [filters]);
+
+  // Updated distance calculation function
   const calculateDistance = (
     lat1: number,
     lon1: number,
     lat2: number,
     lon2: number
   ) => {
-    const R = 6371; // Earth's radius in km
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const toRad = (value: number) => (value * Math.PI) / 180;
+
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
+      Math.cos(toRad(lat1)) *
+        Math.cos(toRad(lat2)) *
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    const distance = R * c; // Distance in kilometers
+
+    return distance;
   };
+
   const filteredItems = items.filter((item) => {
     const priceMatch =
       item.price >= filters.minPrice && item.price <= filters.maxPrice;
@@ -191,16 +201,18 @@ const Home = () => {
     const zoneMatch = !filters.zone || item.zone === filters.zone;
 
     let distanceMatch = true;
-    if (filters.zone && filters.distance) {
+    if (filters.city && filters.zone && typeof filters.distance === "number") {
       const referencePoint =
         cityData[filters.city]?.referencePoints[filters.zone];
-      const distance = calculateDistance(
-        referencePoint.lat,
-        referencePoint.lng,
-        item.location.lat,
-        item.location.lng
-      );
-      distanceMatch = distance <= filters.distance;
+      if (referencePoint && item.location) {
+        const distance = calculateDistance(
+          referencePoint.lat,
+          referencePoint.lng,
+          item.location.lat,
+          item.location.lng
+        );
+        distanceMatch = distance <= filters.distance;
+      }
     }
 
     return (
@@ -432,39 +444,68 @@ const Home = () => {
         {filteredItems.length} properties found
       </p>
       {/* Grid Section */}
+      {/* Updated Grid Section with Distance Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6">
-        {filteredItems.map((item) => (
-          <Card
-            key={item.id}
-            className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-            // onClick={() => router.push(`/products/${item.id}`)}
-            onClick={() => router.push(`/products`)}
-          >
-            <div className="relative">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-48 object-cover"
-              />
-              <button
-                onClick={() => handleFavorite(item.id)}
-                className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200"
-              >
-                <Heart className="w-5 h-5 text-red-500" />
-              </button>
-            </div>
-            <CardHeader className="p-4">
-              <h3 className="font-semibold text-lg">{item.title}</h3>
-            </CardHeader>
-            <CardContent className="p-4 pt-0">
-              <div className="flex justify-between text-sm">
-                <span className="font-medium text-cyan-600">${item.price}</span>
-                <span className="text-gray-600">{item.dimension}m²</span>
-                <span className="text-cyan-600">{item.zone}</span>
+        {filteredItems.map((item) => {
+          // Calculate distance if zone is selected
+          let distance = null;
+          if (filters.zone && filters.city) {
+            const referencePoint =
+              cityData[filters.city].referencePoints[filters.zone];
+            distance = calculateDistance(
+              referencePoint.lat,
+              referencePoint.lng,
+              item.location.lat,
+              item.location.lng
+            );
+          }
+
+          return (
+            <Card
+              key={item.id}
+              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              onClick={() => router.push(`/products`)}
+            >
+              <div className="relative">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-48 object-cover"
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFavorite(item.id);
+                  }}
+                  className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200"
+                >
+                  <Heart className="w-5 h-5 text-red-500" />
+                </button>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+              <CardHeader className="p-4">
+                <h3 className="font-semibold text-lg">{item.title}</h3>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <div className="flex flex-col space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium text-cyan-600">
+                      ${item.price}
+                    </span>
+                    <span className="text-gray-600">{item.dimension}m²</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-cyan-600">{item.zone}</span>
+                    {distance !== null && (
+                      <span className="text-gray-600">
+                        {distance.toFixed(1)}km away
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
