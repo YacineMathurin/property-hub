@@ -1,13 +1,56 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, FileText, Download } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-const UserProfile = () => {
+// Types
+interface Property {
+  id: number;
+  title: string;
+  price: number;
+  zone: string;
+  dimension: number;
+  image: string;
+}
+
+interface Favorite extends Property {
+  savedAt: string;
+}
+
+interface Discussion {
+  id: number;
+  propertyTitle: string;
+  lastMessage: string;
+  date: string;
+  image: string;
+}
+
+interface Document {
+  id: number;
+  title: string;
+  size: string;
+  uploadDate: string;
+  url: string;
+}
+
+const UserProfile: React.FC = () => {
+  const { user, error, isLoading } = useUser();
+  
+  // Get user initials for avatar fallback
+  const getInitials = (name: string = "") => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
+
   // Simulated data - replace with actual API calls
-  const favorites = [
+  const favorites: Favorite[] = [
     {
       id: 1,
       title: "Modern Studio Apartment",
@@ -17,10 +60,9 @@ const UserProfile = () => {
       image: "https://placehold.co/300x200",
       savedAt: "2024-02-15",
     },
-    // Add more favorites...
   ];
 
-  const discussions = [
+  const discussions: Discussion[] = [
     {
       id: 1,
       propertyTitle: "Park View Apartment",
@@ -28,10 +70,9 @@ const UserProfile = () => {
       date: "2024-02-16",
       image: "https://placehold.co/300x200",
     },
-    // Add more discussions...
   ];
 
-  const documents = [
+  const documents: Document[] = [
     {
       id: 1,
       title: "Lease Agreement.pdf",
@@ -46,12 +87,26 @@ const UserProfile = () => {
       uploadDate: "2024-02-12",
       url: "#",
     },
-    // Add more documents...
   ];
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading user profile</div>;
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">My Profile</h1>
+      {/* User Profile Header */}
+      <div className="mb-8 flex items-center gap-6">
+        <Avatar className="w-20 h-20">
+          <AvatarImage src={user?.picture || ""} alt={user?.name || ""} />
+          <AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <h1 className="text-3xl font-bold mb-2">
+            {user?.name}
+          </h1>
+          <p className="text-gray-600">{user?.email}</p>
+        </div>
+      </div>
       
       <Tabs defaultValue="historic" className="space-y-6">
         <TabsList className="bg-gray-100">
